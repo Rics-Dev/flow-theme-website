@@ -1,0 +1,164 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  image: string;
+  url?: string;
+  repoUrl?: string;
+  installCommand?: string;
+  comingSoon?: boolean;
+}
+
+const { 
+  title, 
+  description, 
+  image, 
+  url, 
+  repoUrl, 
+  installCommand,
+  comingSoon = false 
+} = Astro.props;
+---
+
+<div class={`platform-card ${comingSoon ? 'coming-soon' : ''}`}>
+  <div class="platform-image">
+    <img src={image} alt={`${title} with Flow Theme`} />
+    {comingSoon && <div class="coming-soon-badge">Coming Soon</div>}
+  </div>
+  
+  <div class="platform-content">
+    <h3>{title}</h3>
+    <p>{description}</p>
+    
+    {installCommand && !comingSoon && (
+      <div class="install-command">
+        <h4>Quick Install</h4>
+        <pre><code>{installCommand}</code></pre>
+      </div>
+    )}
+    
+    <div class="platform-links">
+      {url && !comingSoon && <a href={url} class="btn btn-small">Learn More</a>}
+      {repoUrl && !comingSoon && <a href={repoUrl} class="btn btn-small btn-secondary">GitHub</a>}
+    </div>
+  </div>
+</div>
+
+<style>
+  .platform-card {
+    background-color: var(--bg-secondary);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .platform-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--border-accent);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  }
+  
+  .platform-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+  }
+  
+  .platform-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  
+  .platform-card:hover .platform-image img {
+    transform: scale(1.05);
+  }
+  
+  .platform-content {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .platform-content h3 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    font-size: 1.5rem;
+    color: var(--accent-blue);
+  }
+  
+  .platform-content p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    flex: 1;
+  }
+  
+  .install-command {
+    background-color: var(--bg-tertiary);
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border-color);
+  }
+  
+  .install-command h4 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: var(--accent-green);
+  }
+  
+  .install-command pre {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+  }
+  
+  .install-command code {
+    white-space: pre-wrap;
+    word-break: break-all;
+    background: transparent;
+    color: var(--text-primary);
+    padding: 0;
+  }
+  
+  .platform-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: auto;
+  }
+  
+  .btn-small {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .coming-soon-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: var(--accent-purple);
+    color: var(--bg-primary);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+  
+  .coming-soon .platform-image::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 18, 25, 0.7);
+  }
+</style>
